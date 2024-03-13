@@ -64,6 +64,17 @@ Sometimes, the PyPI release becomes slightly outdated. To install from the sourc
 $ python -m pip install git+https://github.com/pytube/pytube
 ```
 
+You can either clone the public repository:
+```
+$ git clone git://github.com/pytube/pytube.git
+```
+
+Once you have a copy of the source, you can embed it in your Python package, or install it into your site-packages by running:
+```
+$ cd pytube
+$ python -m pip install .
+```
+
 ### Using pytube in a Python script
 
 To download a video using the library in a script, you'll need to import the YouTube class from the library and pass an argument of the video URL. From there, you can access the streams and download them.
