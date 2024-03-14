@@ -72,6 +72,8 @@ class YouTube:
 
         self.watch_url = f"https://youtube.com/watch?v={self.video_id}"
         self.embed_url = f"https://www.youtube.com/embed/{self.video_id}"
+        self.short_url = f"https://www.youtube.com/shorts/{self.video_id}"
+        self.live_url = f"https://www.youtube.com/streams/{self.video_id}"
 
         # Shared between all instances of `Stream` (Borg pattern).
         self.stream_monostate = Monostate(

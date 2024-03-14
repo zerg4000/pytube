@@ -254,13 +254,11 @@ class Channel(Playlist):
         try:
             # Extract id from videos and live
             for x in videos:
-                videos_url.append(f"/watch?v="
-                                  f"{x['richItemRenderer']['content']['videoRenderer']['videoId']}")
+                videos_url.append(f"{x['richItemRenderer']['content']['videoRenderer']['videoId']}")
         except (KeyError, IndexError, TypeError):
             # Extract id from short videos
             for x in videos:
-                videos_url.append(f"/watch?v="
-                                  f"{x['richItemRenderer']['content']['reelItemRenderer']['videoId']}")
+                videos_url.append(f"{x['richItemRenderer']['content']['reelItemRenderer']['videoId']}")
 
         # remove duplicates
         return uniqueify(videos_url), continuation
@@ -375,3 +373,28 @@ class Channel(Playlist):
        """
         self.html_url = self.live_url  # Set stream tab
         return DeferredGeneratorList(self.videos_generator())
+
+    @property  # type: ignore
+    @cache
+    def short_urls(self) -> DeferredGeneratorList:
+        """Complete links of all the short in playlist
+
+        :rtype: List[str]
+        :returns: List of video URLs
+        """
+        self.html_url = self.shorts_url  # Set shorts tab
+        return DeferredGeneratorList(self.short_url_generator())
+
+
+    def short_url_generator(self):
+        """Generator that yields video URLs.
+
+        :Yields: Video URLs
+        """
+        for page in self._paginate():
+            for video in page:
+                yield self._short_video_url(video)
+
+    @staticmethod
+    def _short_video_url(watch_path: str):
+        return f"https://www.youtube.com/shorts/{watch_path}"
